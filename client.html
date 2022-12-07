@@ -1,0 +1,314 @@
+<!DOCTYPE HTML>
+<html lang="ru" class="sidebar-visible no-js light">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>Client - GoStreaming</title>
+        <!-- Custom HTML head -->
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff" />
+
+        <link rel="icon" href="favicon.svg">
+        <link rel="shortcut icon" href="favicon.png">
+        <link rel="stylesheet" href="css/variables.css">
+        <link rel="stylesheet" href="css/general.css">
+        <link rel="stylesheet" href="css/chrome.css">
+        <link rel="stylesheet" href="css/print.css" media="print">
+        <!-- Fonts -->
+        <link rel="stylesheet" href="FontAwesome/css/font-awesome.css">
+        <link rel="stylesheet" href="fonts/fonts.css">
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" href="highlight.css">
+        <link rel="stylesheet" href="tomorrow-night.css">
+        <link rel="stylesheet" href="ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+    </head>
+    <body>
+        <!-- Provide site root to javascript -->
+        <script>
+            var path_to_root = "";
+            var default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? "navy" : "light";
+        </script>
+
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script>
+            try {
+                var theme = localStorage.getItem('mdbook-theme');
+                var sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script>
+            var theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            var html = document.querySelector('html');
+            html.classList.remove('no-js')
+            html.classList.remove('light')
+            html.classList.add(theme);
+            html.classList.add('js');
+        </script>
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script>
+            var html = document.querySelector('html');
+            var sidebar = 'hidden';
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            }
+            html.classList.remove('sidebar-visible');
+            html.classList.add("sidebar-" + sidebar);
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <div class="sidebar-scrollbox">
+                <ol class="chapter"><li class="chapter-item expanded affix "><a href="base_description.html">Общее описание</a></li><li class="chapter-item expanded affix "><li class="part-title">Компоненты</li><li class="chapter-item expanded "><a href="runtime.html"><strong aria-hidden="true">1.</strong> Runtime</a></li><li class="chapter-item expanded "><a href="meta_node.html"><strong aria-hidden="true">2.</strong> Meta Node</a></li><li class="chapter-item expanded "><a href="machine_node.html"><strong aria-hidden="true">3.</strong> Machine Node</a></li><li class="chapter-item expanded "><a href="client.html" class="active"><strong aria-hidden="true">4.</strong> Client</a></li></ol>
+            </div>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle"></div>
+        </nav>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky bordered">
+                    <div class="left-buttons">
+                        <button id="sidebar-toggle" class="icon-button" type="button" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </button>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        </ul>
+                        <button id="search-toggle" class="icon-button" type="button" title="Search. (Shortkey: s)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="S" aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">GoStreaming</h1>
+
+                    <div class="right-buttons">
+                        <a href="print.html" title="Print this book" aria-label="Print this book">
+                            <i id="print-button" class="fa fa-print"></i>
+                        </a>
+                    </div>
+                </div>
+
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script>
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <h2 id="client"><a class="header" href="#client">Client</a></h2>
+<p>Клиент для работы с потоками данных.</p>
+<h3 id="Установка"><a class="header" href="#Установка">Установка</a></h3>
+<pre><code class="language-bash">go get -u github.com/GDVFox/gostreaming/gostreaming/.../
+</code></pre>
+<h3 id="Команды"><a class="header" href="#Команды">Команды</a></h3>
+<p>Любой вызов имеет вид:</p>
+<pre><code class="language-bash">gostreaming &lt;meta_node_host&gt;:&lt;meta_node_port&gt; CATEGORY COMMAND [OPTIONS]
+</code></pre>
+<h4 id="schemas"><a class="header" href="#schemas">Schemas</a></h4>
+<p>При задании CATEGORY <code>schemas</code> доступен следующий набор команд:</p>
+<h5 id="list"><a class="header" href="#list">List</a></h5>
+<p>Возвращает список зарегистрированных действий.</p>
+<p>Пример:</p>
+<pre><code class="language-bash">gostreaming 127.0.0.1:5555 schemas list
+</code></pre>
+<p>При этом отображается статус схемы.</p>
+<h5 id="get"><a class="header" href="#get">Get</a></h5>
+<p>Возвращает описание указанной схемы. Описание схемы представлено <a href="#%D0%BE%D0%BF%D0%B8%D1%81%D0%B0%D0%BD%D0%B8%D0%B5-%D1%81%D1%85%D0%B5%D0%BC%D1%8B">тут</a>.</p>
+<p>Флаги, описание обязательных флагов <em>выделено</em>:</p>
+<div class="table-wrapper"><table><thead><tr><th>Опция</th><th>По умолчанию</th><th>Описание</th></tr></thead><tbody>
+<tr><td><code>-n, --name</code></td><td></td><td><em>имя загружаемой схемы</em></td></tr>
+<tr><td><code>-f, --format</code></td><td>yaml</td><td>формат вывода, возможные значения: json, yaml.</td></tr>
+<tr><td><code>-o, --out</code></td><td></td><td>файл, в который будет записана схема</td></tr>
+<tr><td><code>-h, --help</code></td><td></td><td>выводит сообщение с помощью по команде</td></tr>
+</tbody></table>
+</div>
+<p>Пример:</p>
+<pre><code class="language-bash">gostreaming 127.0.0.1:5555 schemas get -n simplepipe -f json -o simplepipe.json
+</code></pre>
+<h5 id="new"><a class="header" href="#new">New</a></h5>
+<p>Загружает новую схему. Описание схемы представлено <a href="#%D0%BE%D0%BF%D0%B8%D1%81%D0%B0%D0%BD%D0%B8%D0%B5-%D1%81%D1%85%D0%B5%D0%BC%D1%8B">тут</a>.</p>
+<p>Флаги, описание обязательных флагов <em>выделено</em>:</p>
+<div class="table-wrapper"><table><thead><tr><th>Опция</th><th>По умолчанию</th><th>Описание</th></tr></thead><tbody>
+<tr><td><code>-f, --file</code></td><td></td><td><em>файл со схемой в формате json или yaml</em></td></tr>
+<tr><td><code>-h, --help</code></td><td></td><td>выводит сообщение с помощью по команде</td></tr>
+</tbody></table>
+</div>
+<p>Пример:</p>
+<pre><code class="language-bash">gostreaming 127.0.0.1:5555 schemas new -f examples/simplepipe/simplepipe.yaml
+</code></pre>
+<h5 id="rm"><a class="header" href="#rm">RM</a></h5>
+<p>Удаляет указанную схему.</p>
+<p>Флаги, описание обязательных флагов <em>выделено</em>:</p>
+<div class="table-wrapper"><table><thead><tr><th>Опция</th><th>По умолчанию</th><th>Описание</th></tr></thead><tbody>
+<tr><td><code>-n, --name</code></td><td></td><td><em>имя схемы для удаления</em></td></tr>
+<tr><td><code>-h, --help</code></td><td></td><td>выводит сообщение с помощью по команде</td></tr>
+</tbody></table>
+</div>
+<p>Пример:</p>
+<pre><code class="language-bash">gostreaming 127.0.0.1:5555 schemas rm -n simplepipe
+</code></pre>
+<h5 id="run"><a class="header" href="#run">Run</a></h5>
+<p>Запускает указанную схему с использованием сохраненного описания.</p>
+<p>Флаги, описание обязательных флагов <em>выделено</em>:</p>
+<div class="table-wrapper"><table><thead><tr><th>Опция</th><th>По умолчанию</th><th>Описание</th></tr></thead><tbody>
+<tr><td><code>-n, --name</code></td><td></td><td><em>имя схемы для запуска</em></td></tr>
+<tr><td><code>-h, --help</code></td><td></td><td>выводит сообщение с помощью по команде</td></tr>
+</tbody></table>
+</div>
+<p>Пример:</p>
+<pre><code class="language-bash">gostreaming 127.0.0.1:5555 schemas run -n simplepipe
+</code></pre>
+<h5 id="stop"><a class="header" href="#stop">Stop</a></h5>
+<p>Останавливает указанную схему.</p>
+<p>Флаги, описание обязательных флагов <em>выделено</em>:</p>
+<div class="table-wrapper"><table><thead><tr><th>Опция</th><th>По умолчанию</th><th>Описание</th></tr></thead><tbody>
+<tr><td><code>-n, --name</code></td><td></td><td><em>имя схемы для запуска</em></td></tr>
+<tr><td><code>-h, --help</code></td><td></td><td>выводит сообщение с помощью по команде</td></tr>
+</tbody></table>
+</div>
+<p>Пример:</p>
+<pre><code class="language-bash">gostreaming 127.0.0.1:5555 schemas stop -n simplepipe
+</code></pre>
+<h4 id="actions"><a class="header" href="#actions">Actions</a></h4>
+<p>При задании CATEGORY <code>actions</code> доступен следующий набор команд:</p>
+<h5 id="list-1"><a class="header" href="#list-1">List</a></h5>
+<p>Возвращает список сохраненных действий.</p>
+<p>Пример:</p>
+<pre><code class="language-bash">gostreaming 127.0.0.1:5555 actions list
+</code></pre>
+<h5 id="get-1"><a class="header" href="#get-1">Get</a></h5>
+<p>Возвращает бинарный файл, который был загружен ранее как действие.</p>
+<p>Флаги, описание обязательных флагов <em>выделено</em>:</p>
+<div class="table-wrapper"><table><thead><tr><th>Опция</th><th>По умолчанию</th><th>Описание</th></tr></thead><tbody>
+<tr><td><code>-n, --name</code></td><td></td><td><em>имя загружаемого действия</em></td></tr>
+<tr><td><code>-o, --out</code></td><td></td><td>файл, в который будет записано действие</td></tr>
+<tr><td><code>-h, --help</code></td><td></td><td>выводит сообщение с помощью по команде</td></tr>
+</tbody></table>
+</div>
+<p>Пример:</p>
+<pre><code class="language-bash">gostreaming 127.0.0.1:5555 actions get -n printer -o printer
+</code></pre>
+<h5 id="new-1"><a class="header" href="#new-1">New</a></h5>
+<p>Загружает новое действие.</p>
+<p>Флаги, описание обязательных флагов <em>выделено</em>:</p>
+<div class="table-wrapper"><table><thead><tr><th>Опция</th><th>По умолчанию</th><th>Описание</th></tr></thead><tbody>
+<tr><td><code>-n, --name</code></td><td></td><td><em>имя нового действия</em></td></tr>
+<tr><td><code>-f, --file</code></td><td></td><td><em>бинарный файл с действием</em></td></tr>
+<tr><td><code>-h, --help</code></td><td></td><td>выводит сообщение с помощью по команде</td></tr>
+</tbody></table>
+</div>
+<p>Пример:</p>
+<pre><code class="language-bash">gostreaming 127.0.0.1:5555 actions new -n filter -f _staff/bin/filter
+</code></pre>
+<h5 id="rm-1"><a class="header" href="#rm-1">RM</a></h5>
+<p>Удаляет указанное действие.</p>
+<p>Флаги, описание обязательных флагов <em>выделено</em>:</p>
+<div class="table-wrapper"><table><thead><tr><th>Опция</th><th>По умолчанию</th><th>Описание</th></tr></thead><tbody>
+<tr><td><code>-n, --name</code></td><td></td><td><em>имя действия для удаления</em></td></tr>
+<tr><td><code>-h, --help</code></td><td></td><td>выводит сообщение с помощью по команде</td></tr>
+</tbody></table>
+</div>
+<p>Пример:</p>
+<pre><code class="language-bash">gostreaming 127.0.0.1:5555 actions rm -n printer
+</code></pre>
+<h4 id="help"><a class="header" href="#help">Help</a></h4>
+<p>При задании CATEGORY <code>help</code> выводится сообщение с помощью по команде.</p>
+<h4 id="about"><a class="header" href="#about">About</a></h4>
+<p>При задании CATEGORY <code>about</code> выводится информация о клиенте gostreaming.</p>
+<h3 id="Описание-схемы"><a class="header" href="#Описание-схемы">Описание схемы</a></h3>
+<p>Представлено в формате yaml, в формате json все названия и ограничения аналогичны.</p>
+<pre><code class="language-yaml"># Имя схемы, должно быть уникально, среди всех схем, загруженных в meta_node.
+name: simplepipe
+# Список узлов графа потока данных.
+nodes:
+      # Уникальное имя узла, должно содержать только латинские буквы и цифры.
+    - name: numgen
+      # Название действия, которое предварительно загружено в meta_node.
+      action: num_gen
+      # Список адресов узла, по умолчанию действие запускается на первом адресе, в случае отказа, узел поднимается на следующем адресе и так далее.
+      addresses:
+          # Хост сервера, на котором необходимо запускать действие, на этом сервере должна работать machine_node.
+        - host: 127.0.0.1
+          # Порт действия, данный порт будет использоваться для связи действий между собой и не должен повторяться в пределах одного сервера.
+          port: 9191
+      # Список аргументов командной строки, которые будут переданы действию.
+      args:
+        - --freq=100
+      # Список переменных окружения, которые будут переданы действию в формате KEY: Value.
+      env:
+        SECRET_KEY: please
+# Описание схемы в виде алгебраического выражения.
+dataflow: numgen ; printer
+</code></pre>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="machine_node.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="machine_node.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+            </nav>
+
+        </div>
+
+        <script>
+            window.playground_copyable = true;
+        </script>
+        <script src="elasticlunr.min.js"></script>
+        <script src="mark.min.js"></script>
+        <script src="searcher.js"></script>
+        <script src="clipboard.min.js"></script>
+        <script src="highlight.js"></script>
+        <script src="book.js"></script>
+
+        <!-- Custom JS scripts -->
+    </body>
+</html>
